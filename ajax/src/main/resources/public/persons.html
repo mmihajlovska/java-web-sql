@@ -1,0 +1,28 @@
+
+<table class="table table-hover">
+	<tr>
+		<th>Name</th>
+		<th>Age</th>
+		<th>City</th>
+		<th></th>
+	</tr>
+	<tbody>
+
+		{{#persons}}
+		<tr>
+			<td>{{name}}</td>
+			<td>{{age}}</td>
+			<td>{{city}}</td>
+			<td>
+				<button type="button" class="btn btn-danger btn-circle" onclick="del({{id}});">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
+				<button type="button" class="btn btn-circle" id="btnEdit" onclick="editPerson({{id}});">
+					<span class="glyphicon glyphicon-edit"></span>
+				</button>
+			</td>
+		</tr>
+		{{/persons}}
+
+	</tbody>
+</table>

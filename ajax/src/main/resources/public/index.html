@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="" />
+<meta name="author" content="" />
+
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+	rel="stylesheet">
+
+
+<style>
+
+#homeImg{
+width:100%;
+height:500px;
+}
+
+.fa-spin {
+	font-size: 59px;
+	position: fixed;
+    top: 40%;
+    right: 50%;
+}
+
+.navbar-default {
+	background-color: #1BA3B5;
+}
+
+.navbar-default .navbar-brand {
+	color: #0F094A;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: #0F094A;
+}
+
+body {
+	color: #0A187B !important;
+}
+
+.btn-circle {
+	margin-top: 6px;
+	width: 37px;
+	height: 37px;
+	padding: 7px 10px;
+	font-size: 17px;
+	line-height: 1.60;
+	border-radius: 60px;
+	float: right;
+}
+
+#btnEdit {
+	background-color: #1BA3B5;
+	color: white;
+	margin-top: 6px;
+	width: 37px;
+	height: 37px;
+	padding: 6px 10px;
+	font-size: 17px;
+	line-height: 1.60;
+	border-radius: 60px;
+	float: right;
+	focus:
+}
+
+#btnEdit:hover {
+	background-color: #128898;
+}
+</style>
+</head>
+
+<body>
+
+	<nav role="navigation" class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<button data-target="#collapsable" class="navbar-toggle collapsed"
+					data-toggle="collapse" type="button">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/"><span class="fa fa-area-chart"></span>
+					Library</a>
+			</div>
+			<div id="collapsable" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-left">
+					<li id="home"><a href="/">Home</a></li>
+					<li id="p"><a href="#">Persons</a></li>
+					<li id="b"><a href="#">Books</a></li>
+				</ul>
+				<div class="searchForm">
+					<button type="button" class="btn btn-warning btn-circle"
+						id="searchPerson">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+					<div class="navbar-form navbar-right hidden-xs">
+						<div class="searchform">
+							<input id="searchVal" class="form-control" type="text" value=""
+								name="s" placeholder="Search">
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</nav>
+		<img id="homeImg" src="library.jpg"/>
+
+	<div class="container">
+
+		<div id="formPerson">
+			<form id="contactFormUser" class="form-horizontal">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<div class="col-md-6">
+							<b>Enter your name:</b><input class="form-control" id="name" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<b>Enter your age:</b><input class="form-control" id="age" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<b>Enter your city:</b><input class="form-control" id="city" />
+						</div>
+					</div>
+					<button class="btn btn-warning" id="save">Save</button>
+					<button class="btn btn-warning" id="rename">Save</button>
+					<button class="btn btn-default" id="back">Back</button>
+					<h4 id="message"></h4>
+					<p id="info"></p>
+				</div>
+			</form>
+		</div>
+
+		<div id="tablePerson">
+			<div id="person"></div>
+			<button class="btn btn-warning" id="addPerson" onclick="add();">ADD</button>
+			<button class="btn btn-default" id="back2">Back</button>
+		</div>
+		
+		<div id="tableBook">
+			<div id="book"></div>
+			<button class="btn btn-warning" id="addBook">ADD</button>
+			<button class="btn btn-default" id="back2Book">Back</button>
+		</div>
+		
+	</div>
+	<div>
+		<i class="fa fa-spinner fa-spin"></i>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="app.js"></script>
+	<script src="mustache.min.js"></script>
+</body>
+</html>
