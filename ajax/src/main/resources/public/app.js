@@ -1,4 +1,6 @@
 var personId;
+var bookId;
+
 $(function() {
 	var params = {};
 	$('#p').click(function() {
@@ -9,6 +11,7 @@ $(function() {
 		displayBooks('/getSqlDataBook', params);
 	});
 });
+
 function displayPersons(url, params) {
 	$.get(url, params).done(function(data) {
 		var html = '';
@@ -27,7 +30,7 @@ function displayPersons(url, params) {
 }
 
 function displayBooks(url, params) {
-	$.get(url, '/getSqlDataBook', params).done(function(data) {
+	$.get(url, params).done(function(data) {
 		var html = '';
 		$('#message').html(data.msg);
 
@@ -43,8 +46,7 @@ function displayBooks(url, params) {
 	});
 }
 
-$('#save').click(function() {
-
+$('#savePerson').click(function() {
 	var name = $('#name').val();
 	var age = $('#age').val();
 	var city = $('#city').val();
@@ -60,12 +62,35 @@ $('#save').click(function() {
 	$('#tablePerson').show();
 });
 
+$('#saveBook').click(function() {
+	var title = $('#title').val();
+	var year = $('#year').val();
+
+	var params = {
+		'title' : title,
+		year : year,
+	};
+
+	displayBooks('/addBook', params);
+	$('#formBook').hide();
+	$('#tableBook').show();
+});
+
 function add() {
 	$('#tablePerson').hide();
 	$('.searchForm').hide();
 	$('#formPerson').show();
-	$('#save').show();
-	$('#rename').hide();
+	$('#savePerson').show();
+	$('#renamePerson').hide();
+
+}
+
+function addBook() {
+	$('#tableBook').hide();
+	$('.searchFormBook').hide();
+	$('#formBook').show();
+	$('#saveBook').show();
+	$('#renameBook').hide();
 
 }
 
@@ -76,6 +101,15 @@ function del(id) {
 
 	displayPersons('/delete', params);
 	$('#formPerson').hide();
+}
+
+function delBook(id) {
+	var params = {
+		id : id
+	};
+
+	displayBooks('/deleteBook', params);
+	$('#formBook').hide();
 }
 
 function editPerson(id) {
@@ -92,17 +126,40 @@ function editPerson(id) {
 		$('#age').val(person.age);
 		$('#city').val(person.city);
 		$('#formPerson').show();
-		$('#rename').show();
+		$('#renamePerson').show();
 	});
 
 	$(".fa-spin").show();
 	$(".title").hide();
-	$('#save').hide();
+	$('#savePerson').hide();
 	$('#tablePerson').hide();
 	$('.searchForm').hide();
 }
 
-$('#rename').click(function() {
+function editBook(id) {
+	var params = {
+		id : id,
+	};
+
+	bookId = id;
+
+	$.get('/getBook', params, function(book) {
+		$(".fa-spin").hide();
+		$(".title").show();
+		$('#title').val(book.title);
+		$('#year').val(book.year);
+		$('#formBook').show();
+		$('#renameBook').show();
+	});
+
+	$(".fa-spin").show();
+	$(".title").hide();
+	$('#saveBook').hide();
+	$('#tableBook').hide();
+	$('.searchForm').hide();
+}
+
+$('#renamePerson').click(function() {
 	var name = $('#name').val();
 	var age = $('#age').val();
 	var city = $('#city').val();
@@ -122,6 +179,23 @@ $('#rename').click(function() {
 	$('#home').hide();
 });
 
+$('#renameBook').click(function() {
+	var title = $('#title').val();
+	var year = $('#year').val();
+	var params = {
+		'title' : title,
+		year : year,
+		id : bookId,
+	};
+
+	$('#title').val('');
+	$('#year').val('');
+	displayBooks('/editBook', params);
+	$('#tableBook').show();
+	$('#formBook').hide();
+	$('#home').hide();
+});
+
 $('#searchPerson').click(function() {
 	var val = $('#searchVal').val();
 	var params = {
@@ -130,36 +204,63 @@ $('#searchPerson').click(function() {
 
 	displayPersons('/searchPerson', params);
 	$('#addPerson').hide();
-	$('#back2').show();
+	$('#searchBackPerson').show();
 });
 
-$('#back2').click(function() {
+$('#searchBook').click(function() {
+	var val = $('#searchValBook').val();
+	var params = {
+		'val' : val
+	};
+
+	displayBooks('/searchBook', params);
+	$('#addBook').hide();
+	$('#searchBackBook').show();
+});
+
+$('#searchBackPerson').click(function() {
 	$('#searchVal').val('');
 	var params = {};
 	displayPersons('/getSqlDataPerson', params);
 	$('#addPerson').show();
-	$('#back2').hide();
+	$('#searchBackPerson').hide();
+
+});
+$('#searchBackBook').click(function() {
+	$('#searchValBook').val('');
+	var params = {};
+	displayBooks('/getSqlDataBook', params);
+	$('#addBook').show();
+	$('#searchBackBook').hide();
 
 });
 
-$('#back').click(function() {
+$('#addBackPerson').click(function() {
 	$('#formPerson').hide();
 	$('#tablePerson').show();
+	$('.searchForm').show();
 });
 
+$('#addBackBook').click(function() {
+	$('#formBook').hide();
+	$('#tableBook').show();
+	$('.searchFormBook').show();
+});
+
+
 $("#formPerson").hide();
-$("#back2").hide();
+$("#formBook").hide();
+$("#searchBackPerson").hide();
 $(".fa-spin").hide();
 $('#tablePerson').hide();
 $('.searchForm').hide();
-$('#save').show();
-$('#rename').hide();
+$('.searchFormBook').hide();
+$('#savePerson').show();
+$('#renamePerson').hide();
 $('#addBook').hide();
 $('#addPerson').hide();
-$('#back2Book').hide();
+$('#searchBackBook').hide();
 $('#home').css("background-color", "#f0ad4e");
-
-
 
 $('#p').click(function() {
 	$(this).css("background-color", "#f0ad4e");
@@ -168,6 +269,7 @@ $('#p').click(function() {
 	$('#tableBook').hide();
 	$('#tablePerson').show();
 	$('.searchForm').show();
+	$('.searchFormBook').hide();
 	$('#homeImg').hide();
 	$('#addPerson').show();
 
@@ -179,7 +281,8 @@ $('#b').click(function() {
 	$('#home').css("background-color", "#1BA3B5");
 	$('#tableBook').show();
 	$('#tablePerson').hide();
-	$('.searchForm').show();
+	$('.searchForm').hide();
+	$('.searchFormBook').show();
 	$('#homeImg').hide();
 	$('#addBook').show();
 

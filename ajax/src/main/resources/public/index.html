@@ -18,16 +18,16 @@
 
 <style>
 
-#homeImg{
-width:100%;
-height:500px;
+#homeImg {
+	width: 100%;
+	height: 500px;
 }
 
 .fa-spin {
 	font-size: 59px;
 	position: fixed;
-    top: 40%;
-    right: 50%;
+	top: 40%;
+	right: 50%;
 }
 
 .navbar-default {
@@ -109,11 +109,24 @@ body {
 						</div>
 					</div>
 				</div>
+				
+				<div class="searchFormBook">
+					<button type="button" class="btn btn-warning btn-circle"
+						id="searchBook">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+					<div class="navbar-form navbar-right hidden-xs">
+						<div class="searchform">
+							<input id="searchValBook" class="form-control" type="text" value=""
+								name="s" placeholder="Search">
+						</div>
+					</div>
+				</div>
 
 			</div>
 		</div>
 	</nav>
-		<img id="homeImg" src="library.jpg"/>
+	<img id="homeImg" src="library.jpg" />
 
 	<div class="container">
 
@@ -135,9 +148,31 @@ body {
 							<b>Enter your city:</b><input class="form-control" id="city" />
 						</div>
 					</div>
-					<button class="btn btn-warning" id="save">Save</button>
-					<button class="btn btn-warning" id="rename">Save</button>
-					<button class="btn btn-default" id="back">Back</button>
+					<button class="btn btn-warning" id="savePerson">Save</button>
+					<button class="btn btn-warning" id="renamePerson">Save</button>
+					<button class="btn btn-default" id="addBackPerson">Back</button>
+					<h4 id="message"></h4>
+					<p id="info"></p>
+				</div>
+			</form>
+		</div>
+
+		<div id="formBook">
+			<form id="contactFormUser" class="form-horizontal">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<div class="col-md-6">
+							<b>Enter title:</b><input class="form-control" id="title" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<b>Enter year:</b><input class="form-control" id="year" />
+						</div>
+					</div>
+					<button class="btn btn-warning" id="saveBook">Save</button>
+					<button class="btn btn-warning" id="renameBook">Save</button>
+					<button class="btn btn-default" id="addBackBook">Back</button>
 					<h4 id="message"></h4>
 					<p id="info"></p>
 				</div>
@@ -147,15 +182,15 @@ body {
 		<div id="tablePerson">
 			<div id="person"></div>
 			<button class="btn btn-warning" id="addPerson" onclick="add();">ADD</button>
-			<button class="btn btn-default" id="back2">Back</button>
+			<button class="btn btn-default" id="searchBackPerson">Back</button>
 		</div>
-		
+
 		<div id="tableBook">
 			<div id="book"></div>
-			<button class="btn btn-warning" id="addBook">ADD</button>
-			<button class="btn btn-default" id="back2Book">Back</button>
+			<button class="btn btn-warning" id="addBook" onclick="addBook()">ADD</button>
+			<button class="btn btn-default" id="searchBackBook">Back</button>
 		</div>
-		
+
 	</div>
 	<div>
 		<i class="fa fa-spinner fa-spin"></i>

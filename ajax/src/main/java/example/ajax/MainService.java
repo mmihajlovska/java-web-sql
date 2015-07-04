@@ -65,11 +65,171 @@ public class MainService {
 		}
 		return null;
 	}
+	
+	public Map<String, Object> getBook(Map<String, String> params)
+			throws SQLException {
+		long id = Long.valueOf(params.get("id"));
+		String sql = "select * from book where id = " + id;
+
+		try {
+			return listBook(sql).get(0);
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
 
 	public List<Map<String, Object>> getSqlDataPerson() {
 
 		try {
 			return listPerson();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Map<String, Object>> add(Map<String, String> params) {
+		String paramName = params.get("name");
+		int paramAge = Integer.valueOf(params.get("age"));
+		String paramCity = params.get("city");
+
+		try {
+			String sql = "insert into person" + "(name,age,city)" + "values('"
+					+ paramName + "', " + paramAge + ", '" + paramCity + "')";
+
+			dataStm().executeUpdate(sql);
+
+			return listPerson();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Map<String, Object>> addBook(Map<String, String> params) {
+		String paramTitle = params.get("title");
+		int paramYear = Integer.valueOf(params.get("year"));
+
+		try {
+			String sql = "insert into book" + "(title,year)" + "values('"
+					+ paramTitle + "', " + paramYear + ")";
+
+			dataStm().executeUpdate(sql);
+
+			return listBook();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Map<String, Object>> delete(Map<String, String> params) {
+		long i = Long.valueOf(params.get("id"));
+
+		try {
+
+			String sql = "delete from person where id = " + i;
+
+			dataStm().executeUpdate(sql);
+
+			return listPerson();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Map<String, Object>> deleteBook(Map<String, String> params) {
+		long i = Long.valueOf(params.get("id"));
+
+		try {
+
+			String sql = "delete from book where id = " + i;
+
+			dataStm().executeUpdate(sql);
+
+			return listBook();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Map<String, Object>> editPerson(Map<String, String> params) {
+
+		String paramName = params.get("name");
+		int paramAge = Integer.valueOf(params.get("age"));
+		String paramCity = params.get("city");
+		long i = Long.valueOf(params.get("id"));
+
+		try {
+
+			String sql = "update person set name='" + paramName + "', age="
+					+ paramAge + ", city='" + paramCity + "' where id = " + i;
+
+			dataStm().executeUpdate(sql);
+
+			return listPerson();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Map<String, Object>> editBook(Map<String, String> params) {
+
+		String paramTitle = params.get("title");
+		int paramYear = Integer.valueOf(params.get("year"));
+		long i = Long.valueOf(params.get("id"));
+
+		try {
+
+			String sql = "update book set title='" + paramTitle + "', year="
+					+ paramYear + " where id = " + i;
+
+			dataStm().executeUpdate(sql);
+
+			return listBook();
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Map<String, Object>> searchPerson(Map<String, String> params) {
+
+		String val = params.get("val");
+
+		try {
+
+			String sql = "select * from person where name like '" + val + "%'";
+
+			return listPerson(sql);
+
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Map<String, Object>> searchBook(Map<String, String> params) {
+
+		String val = params.get("val");
+
+		try {
+
+			String sql = "select * from book where title like '" + val + "%'";
+
+			return listBook(sql);
 
 		} catch (Exception exc) {
 			exc.printStackTrace();
@@ -105,81 +265,6 @@ public class MainService {
 	public List<Map<String, Object>> getSqlDataBook() {
 		try {
 			return listBook();
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		return null;
-	}
-
-	public List<Map<String, Object>> add(Map<String, String> params) {
-
-		String paramName = params.get("name");
-		int paramAge = Integer.valueOf(params.get("age"));
-		String paramCity = params.get("city");
-
-		try {
-			String sql = "insert into person" + "(name,age,city)" + "values('"
-					+ paramName + "', " + paramAge + ", '" + paramCity + "')";
-
-			dataStm().executeUpdate(sql);
-
-			return listPerson();
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		return null;
-	}
-
-	public List<Map<String, Object>> delete(Map<String, String> params) {
-		long i = Long.valueOf(params.get("id"));
-
-		try {
-
-			String sql = "delete from person where id = " + i;
-
-			dataStm().executeUpdate(sql);
-
-			return listPerson();
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		return null;
-	}
-
-	public List<Map<String, Object>> editPerson(Map<String, String> params) {
-
-		long i = Long.valueOf(params.get("id"));
-		String paramName = params.get("name");
-		int paramAge = Integer.valueOf(params.get("age"));
-		String paramCity = params.get("city");
-
-		try {
-
-			String sql = "update person set name='" + paramName + "', age="
-					+ paramAge + ", city='" + paramCity + "' where id = " + i;
-
-			dataStm().executeUpdate(sql);
-
-			return listPerson();
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		return null;
-	}
-
-	public List<Map<String, Object>> searchPerson(Map<String, String> params) {
-
-		String val = params.get("val");
-
-		try {
-
-			String sql = "select * from person where name like '" + val + "%'";
-
-			return listPerson(sql);
 
 		} catch (Exception exc) {
 			exc.printStackTrace();
