@@ -62,27 +62,18 @@ public class MainService {
 		return listPerson("select * from person");
 	}
 
-	public Map<String, Object> getPerson(Map<String, String> params)
+	public Map<String, Object> searchResult(Map<String, String> params)
 			throws SQLException {
 		long id = Long.valueOf(params.get("id"));
-		String sql = "select * from person where id = " + id;
+		String table = params.get("table");
 
 		try {
-			return listPerson(sql).get(0);
+			if (table.equals("person")) {
+				return listPerson("select * from" + table + "where id=" + id)
+						.get(0);
 
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		return null;
-	}
-
-	public Map<String, Object> getBook(Map<String, String> params)
-			throws SQLException {
-		long id = Long.valueOf(params.get("id"));
-		String sql = "select * from book where id = " + id;
-
-		try {
-			return listBook(sql).get(0);
+			}
+			return listBook("select * from" + table + "where id=" + id).get(0);
 
 		} catch (Exception exc) {
 			exc.printStackTrace();
@@ -141,28 +132,17 @@ public class MainService {
 
 	public List<Map<String, Object>> delete(Map<String, String> params) {
 		long id = Long.valueOf(params.get("id"));
+		String table = params.get("table");
 
 		try {
-			PreparedStatement stm = dataPreStm("delete from person where id = ?");
+			PreparedStatement stm = dataPreStm("delete from " + table
+					+ " where id = ?");
 			stm.setLong(1, id);
 			stm.executeUpdate();
-			
-			return listPerson();
 
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		return null;
-	}
-
-	public List<Map<String, Object>> deleteBook(Map<String, String> params) {
-		long id = Long.valueOf(params.get("id"));
-
-		try {
-			PreparedStatement stm = dataPreStm("delete from book where id = ?");
-			stm.setLong(1, id);
-			stm.executeUpdate();
-			
+			if (table.equals("person")) {
+				return listPerson();
+			}
 			return listBook();
 
 		} catch (Exception exc) {
@@ -217,13 +197,11 @@ public class MainService {
 	}
 
 	public List<Map<String, Object>> searchPerson(Map<String, String> params) {
-
+		
 		String val = params.get("val");
 
 		try {
-
 			String sql = "select * from person where name like '" + val + "%'";
-
 			return listPerson(sql);
 
 		} catch (Exception exc) {
@@ -233,13 +211,11 @@ public class MainService {
 	}
 
 	public List<Map<String, Object>> searchBook(Map<String, String> params) {
-
 		String val = params.get("val");
-
+		
 		try {
-
+			
 			String sql = "select * from book where title like '" + val + "%'";
-
 			return listBook(sql);
 
 		} catch (Exception exc) {

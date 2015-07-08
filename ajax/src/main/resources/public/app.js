@@ -102,7 +102,8 @@ function addBook() {
 
 function del(id) {
 	var params = {
-		id : id
+		id : id,
+		"table" : "person"
 	};
 
 	displayPersons('/delete', params);
@@ -111,21 +112,23 @@ function del(id) {
 
 function delBook(id) {
 	var params = {
-		id : id
+		id : id,
+		"table" : "book"
 	};
 
-	displayBooks('/deleteBook', params);
+	displayBooks('/delete', params);
 	$('#formBook').hide();
 }
 
 function editPerson(id) {
 	var params = {
 		id : id,
+		'table': 'person'
 	};
 
 	personId = id;
 
-	$.get('/getPerson', params, function(person) {
+	$.get('/searchResult', params, function(person) {
 		$(".fa-spin").hide();
 		$(".title").show();
 		$('#name').val(person.name);
@@ -145,11 +148,12 @@ function editPerson(id) {
 function editBook(id) {
 	var params = {
 		id : id,
+		'table':'book'
 	};
 
 	bookId = id;
 
-	$.get('/getBook', params, function(book) {
+	$.get('/searchResult', params, function(book) {
 		$(".fa-spin").hide();
 		$(".title").show();
 		$('#title').val(book.title);
@@ -217,6 +221,7 @@ $('#searchBook').click(function() {
 	var val = $('#searchValBook').val();
 	var params = {
 		'val' : val
+
 	};
 
 	displayBooks('/searchBook', params);
@@ -252,7 +257,6 @@ $('#addBackBook').click(function() {
 	$('#tableBook').show();
 	$('.searchFormBook').show();
 });
-
 
 $("#formPerson").hide();
 $("#formBook").hide();
