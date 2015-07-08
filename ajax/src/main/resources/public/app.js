@@ -60,6 +60,10 @@ $('#savePerson').click(function() {
 	displayPersons('/add', params);
 	$('#formPerson').hide();
 	$('#tablePerson').show();
+	$('#name').val('');
+	$('#age').val('');
+	$('#city').val('');
+
 });
 
 $('#saveBook').click(function() {
@@ -74,6 +78,8 @@ $('#saveBook').click(function() {
 	displayBooks('/addBook', params);
 	$('#formBook').hide();
 	$('#tableBook').show();
+	$('#title').val('');
+	$('#year').val('');
 });
 
 function add() {
@@ -268,6 +274,7 @@ $('#p').click(function() {
 	$('#home').css("background-color", "#1BA3B5");
 	$('#tableBook').hide();
 	$('#tablePerson').show();
+	$('#formBook').hide();
 	$('.searchForm').show();
 	$('.searchFormBook').hide();
 	$('#homeImg').hide();
@@ -281,6 +288,7 @@ $('#b').click(function() {
 	$('#home').css("background-color", "#1BA3B5");
 	$('#tableBook').show();
 	$('#tablePerson').hide();
+	$('#formPerson').hide();
 	$('.searchForm').hide();
 	$('.searchFormBook').show();
 	$('#homeImg').hide();

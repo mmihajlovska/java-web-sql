@@ -2,6 +2,7 @@ package example.ajax;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +24,15 @@ public class MainService {
 		Statement myStm = myConn.createStatement();
 
 		return myStm;
+	}
+
+	public PreparedStatement dataPreStm(String sql) throws SQLException {
+
+		Connection myConn = DriverManager.getConnection(url + user + password);
+
+		PreparedStatement stm = myConn.prepareStatement(sql);
+
+		return stm;
 	}
 
 	public List<Map<String, Object>> listPerson(String sql) throws SQLException {
@@ -65,7 +75,7 @@ public class MainService {
 		}
 		return null;
 	}
-	
+
 	public Map<String, Object> getBook(Map<String, String> params)
 			throws SQLException {
 		long id = Long.valueOf(params.get("id"));
@@ -97,10 +107,11 @@ public class MainService {
 		String paramCity = params.get("city");
 
 		try {
-			String sql = "insert into person" + "(name,age,city)" + "values('"
-					+ paramName + "', " + paramAge + ", '" + paramCity + "')";
-
-			dataStm().executeUpdate(sql);
+			PreparedStatement stm = dataPreStm("insert into person (name, age, city) values(?, ?, ?)");
+			stm.setString(1, paramName);
+			stm.setInt(2, paramAge);
+			stm.setString(3, paramCity);
+			stm.executeUpdate();
 
 			return listPerson();
 
@@ -115,10 +126,10 @@ public class MainService {
 		int paramYear = Integer.valueOf(params.get("year"));
 
 		try {
-			String sql = "insert into book" + "(title,year)" + "values('"
-					+ paramTitle + "', " + paramYear + ")";
-
-			dataStm().executeUpdate(sql);
+			PreparedStatement stm = dataPreStm("insert into book (title,year) values(?,?)");
+			stm.setString(1, paramTitle);
+			stm.setInt(2, paramYear);
+			stm.executeUpdate();
 
 			return listBook();
 
@@ -129,14 +140,13 @@ public class MainService {
 	}
 
 	public List<Map<String, Object>> delete(Map<String, String> params) {
-		long i = Long.valueOf(params.get("id"));
+		long id = Long.valueOf(params.get("id"));
 
 		try {
-
-			String sql = "delete from person where id = " + i;
-
-			dataStm().executeUpdate(sql);
-
+			PreparedStatement stm = dataPreStm("delete from person where id = ?");
+			stm.setLong(1, id);
+			stm.executeUpdate();
+			
 			return listPerson();
 
 		} catch (Exception exc) {
@@ -144,16 +154,15 @@ public class MainService {
 		}
 		return null;
 	}
-	
+
 	public List<Map<String, Object>> deleteBook(Map<String, String> params) {
-		long i = Long.valueOf(params.get("id"));
+		long id = Long.valueOf(params.get("id"));
 
 		try {
-
-			String sql = "delete from book where id = " + i;
-
-			dataStm().executeUpdate(sql);
-
+			PreparedStatement stm = dataPreStm("delete from book where id = ?");
+			stm.setLong(1, id);
+			stm.executeUpdate();
+			
 			return listBook();
 
 		} catch (Exception exc) {
@@ -167,14 +176,15 @@ public class MainService {
 		String paramName = params.get("name");
 		int paramAge = Integer.valueOf(params.get("age"));
 		String paramCity = params.get("city");
-		long i = Long.valueOf(params.get("id"));
+		long id = Long.valueOf(params.get("id"));
 
 		try {
-
-			String sql = "update person set name='" + paramName + "', age="
-					+ paramAge + ", city='" + paramCity + "' where id = " + i;
-
-			dataStm().executeUpdate(sql);
+			PreparedStatement stm = dataPreStm("update person set name=?, age=?, city=? where id=?");
+			stm.setString(1, paramName);
+			stm.setInt(2, paramAge);
+			stm.setString(3, paramCity);
+			stm.setLong(4, id);
+			stm.executeUpdate();
 
 			return listPerson();
 
@@ -183,19 +193,20 @@ public class MainService {
 		}
 		return null;
 	}
-	
+
 	public List<Map<String, Object>> editBook(Map<String, String> params) {
 
 		String paramTitle = params.get("title");
 		int paramYear = Integer.valueOf(params.get("year"));
-		long i = Long.valueOf(params.get("id"));
+		long id = Long.valueOf(params.get("id"));
 
 		try {
 
-			String sql = "update book set title='" + paramTitle + "', year="
-					+ paramYear + " where id = " + i;
-
-			dataStm().executeUpdate(sql);
+			PreparedStatement stm = dataPreStm("update book set title=?,year=? where id=?");
+			stm.setString(1, paramTitle);
+			stm.setInt(2, paramYear);
+			stm.setLong(3, id);
+			stm.executeUpdate();
 
 			return listBook();
 
@@ -220,7 +231,7 @@ public class MainService {
 		}
 		return null;
 	}
-	
+
 	public List<Map<String, Object>> searchBook(Map<String, String> params) {
 
 		String val = params.get("val");
