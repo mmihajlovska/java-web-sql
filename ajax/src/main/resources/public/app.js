@@ -22,6 +22,9 @@ function displayPersons(url, params) {
 				persons : data
 			});
 			$('#person').html(rendered);
+			$('#tableBook').hide();
+			$('#tablePerson').show();
+
 		});
 	}).fail(function(data) {
 		$('#info').html('Error!');
@@ -69,10 +72,12 @@ $('#savePerson').click(function() {
 $('#saveBook').click(function() {
 	var title = $('#title').val();
 	var year = $('#year').val();
+	var genre = $('#genre').val();
 
 	var params = {
 		'title' : title,
 		year : year,
+		'genre' : genre
 	};
 
 	displayBooks('/addBook', params);
@@ -80,6 +85,7 @@ $('#saveBook').click(function() {
 	$('#tableBook').show();
 	$('#title').val('');
 	$('#year').val('');
+	$('#genre').val('');
 });
 
 function add() {
@@ -107,7 +113,6 @@ function del(id) {
 	};
 
 	displayPersons('/delete', params);
-	$('#formPerson').hide();
 }
 
 function delBook(id) {
@@ -118,16 +123,16 @@ function delBook(id) {
 
 	displayBooks('/delete', params);
 	$('#formBook').hide();
+
 }
 
 function editPerson(id) {
 	var params = {
 		id : id,
-		'table': 'person'
+		'table' : 'person'
 	};
 
 	personId = id;
-
 	$.get('/searchResult', params, function(person) {
 		$(".fa-spin").hide();
 		$(".title").show();
@@ -143,12 +148,14 @@ function editPerson(id) {
 	$('#savePerson').hide();
 	$('#tablePerson').hide();
 	$('.searchForm').hide();
+	$('#tableBook').hide();
+
 }
 
 function editBook(id) {
 	var params = {
 		id : id,
-		'table':'book'
+		'table' : 'book'
 	};
 
 	bookId = id;
@@ -158,6 +165,7 @@ function editBook(id) {
 		$(".title").show();
 		$('#title').val(book.title);
 		$('#year').val(book.year);
+		$('#genre').val(book.genre);
 		$('#formBook').show();
 		$('#renameBook').show();
 	});
@@ -192,14 +200,18 @@ $('#renamePerson').click(function() {
 $('#renameBook').click(function() {
 	var title = $('#title').val();
 	var year = $('#year').val();
+	var genre = $('#genre').val();
+
 	var params = {
 		'title' : title,
 		year : year,
+		'genre' : genre,
 		id : bookId,
 	};
 
 	$('#title').val('');
 	$('#year').val('');
+	$('#genre').val('');
 	displayBooks('/editBook', params);
 	$('#tableBook').show();
 	$('#formBook').hide();
@@ -257,6 +269,40 @@ $('#addBackBook').click(function() {
 	$('#tableBook').show();
 	$('.searchFormBook').show();
 });
+
+function wrotedBooks(id) {
+	var params = {
+		id : id
+
+	};
+	
+	$.get('/wrotedBooks', params).done(function(data) {
+		var html = '';
+		$('#message').html(data.msg);
+
+		$.get('/books.html', function(rez) {
+			var rendered = Mustache.render(rez, {
+				books : data
+			});
+			$('#tablePerson').hide();
+			$('#tableBook').show();
+			$('#book').html(rendered);
+			$('h3').show().html('Wroted books');
+			$('#btnDelBook').hide();
+			$('#btnEditBook').hide();
+			$('#searchBackBook').show().click(function() {
+				$('#tableBook').hide();
+				$('#tablePerson').show();
+				$('#addBook').hide();
+				$('h3').hide();
+			});
+
+		});
+	}).fail(function(data) {
+		$('#info').html('Error!');
+
+	});
+}
 
 $("#formPerson").hide();
 $("#formBook").hide();

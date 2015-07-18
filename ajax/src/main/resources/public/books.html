@@ -2,24 +2,24 @@
 	<tr>
 		<th>Title</th>
 		<th>Year</th>
+		<th>Genre</th>
 		<th></th>
 	</tr>
 	<tbody>
-
 		{{#books}}
 		<tr>
 			<td>{{title}}</td>
 			<td>{{year}}</td>
+			<td>{{genre}}</td>
 			<td>
-				<button type="button" class="btn btn-danger btn-circle">
+				<button type="button" class="btn btn-danger btn-circle" id="btnDelBook">
 					<span class="glyphicon glyphicon-remove" onclick="delBook({{id}})"></span>
 				</button>
-				<button type="button" class="btn btn-circle" id="btnEdit">
+				<button type="button" class="btn btn-circle" id="btnEditBook">
 					<span class="glyphicon glyphicon-edit" onclick="editBook({{id}})"></span>
 				</button>
 			</td>
 		</tr>
 		{{/books}}
-
 	</tbody>
 </table>

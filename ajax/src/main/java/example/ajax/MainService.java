@@ -66,14 +66,14 @@ public class MainService {
 			throws SQLException {
 		long id = Long.valueOf(params.get("id"));
 		String table = params.get("table");
+		String sql = "select * from " + table + " where id = " + id;
 
 		try {
 			if (table.equals("person")) {
-				return listPerson("select * from" + table + "where id=" + id)
-						.get(0);
+				return listPerson(sql).get(0);
 
 			}
-			return listBook("select * from" + table + "where id=" + id).get(0);
+			return listBook(sql).get(0);
 
 		} catch (Exception exc) {
 			exc.printStackTrace();
@@ -115,11 +115,13 @@ public class MainService {
 	public List<Map<String, Object>> addBook(Map<String, String> params) {
 		String paramTitle = params.get("title");
 		int paramYear = Integer.valueOf(params.get("year"));
+		String paramGenre = params.get("genre");
 
 		try {
-			PreparedStatement stm = dataPreStm("insert into book (title,year) values(?,?)");
+			PreparedStatement stm = dataPreStm("insert into book (title,year,genre) values(?,?,?)");
 			stm.setString(1, paramTitle);
 			stm.setInt(2, paramYear);
+			stm.setString(3, paramGenre);
 			stm.executeUpdate();
 
 			return listBook();
@@ -179,13 +181,15 @@ public class MainService {
 		String paramTitle = params.get("title");
 		int paramYear = Integer.valueOf(params.get("year"));
 		long id = Long.valueOf(params.get("id"));
+		String paramGenre = params.get("genre");
 
 		try {
 
-			PreparedStatement stm = dataPreStm("update book set title=?,year=? where id=?");
+			PreparedStatement stm = dataPreStm("update book set title=?,year=?,genre=? where id=?");
 			stm.setString(1, paramTitle);
 			stm.setInt(2, paramYear);
-			stm.setLong(3, id);
+			stm.setString(3, paramGenre);
+			stm.setLong(4, id);
 			stm.executeUpdate();
 
 			return listBook();
@@ -197,7 +201,7 @@ public class MainService {
 	}
 
 	public List<Map<String, Object>> searchPerson(Map<String, String> params) {
-		
+
 		String val = params.get("val");
 
 		try {
@@ -212,9 +216,9 @@ public class MainService {
 
 	public List<Map<String, Object>> searchBook(Map<String, String> params) {
 		String val = params.get("val");
-		
+
 		try {
-			
+
 			String sql = "select * from book where title like '" + val + "%'";
 			return listBook(sql);
 
@@ -222,6 +226,33 @@ public class MainService {
 			exc.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<Map<String, Object>> wrotedBooks(Map<String, String> params)
+			throws SQLException {
+		long id = Long.valueOf(params.get("id"));
+
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		ResultSet myRs = dataStm()
+				.executeQuery(
+						"select title, book.year as year,genre.name as genre from person join wrote on idPerson=person.id join book on book.id= idBook join has on book.id= has.idBook join genre on genre.id= idGenre where person.id="
+								+ id);
+		while (myRs.next()) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+
+			String title = myRs.getString("title");
+			String genre = myRs.getString("genre");
+			long year = myRs.getLong("year");
+
+			map.put("title", title);
+			map.put("genre", genre);
+			map.put("year", year);
+
+			list.add(map);
+		}
+		System.out.println(list);
+		return list;
+
 	}
 
 	public List<Map<String, Object>> listBook() throws SQLException {
@@ -237,10 +268,12 @@ public class MainService {
 
 			String title = myRs.getString("title");
 			int year = myRs.getInt("year");
+			String genre = myRs.getString("genre");
 			long id = myRs.getLong("id");
 
 			map.put("title", title);
 			map.put("year", year);
+			map.put("genre", genre);
 			map.put("id", id);
 
 			list.add(map);

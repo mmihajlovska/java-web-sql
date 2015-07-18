@@ -17,6 +17,9 @@
 
 
 <style>
+.glyphicon glyphicon-book{
+color:red;
+}
 
 #homeImg {
 	width: 100%;
@@ -57,7 +60,34 @@ body {
 	float: right;
 }
 
-#btnEdit {
+#btnEditPerson {
+	background-color: #1BA3B5;
+	color: white;
+	margin-top: 6px;
+	width: 37px;
+	height: 37px;
+	padding: 6px 10px;
+	font-size: 17px;
+	line-height: 1.60;
+	border-radius: 60px;
+	float: right;
+	focus:
+}
+#btnEditPerson {
+	background-color: #1BA3B5;
+	color: whit	e;
+	margin-top: 6px;
+	width: 37px;
+	height: 37px;
+	padding: 6px 10px;
+	font-size: 17px;
+	line-height: 1.60;
+	border-radius: 60px;
+	float: right;
+	focus:
+}
+
+#btnEditBook {
 	background-color: #1BA3B5;
 	color: white;
 	margin-top: 6px;
@@ -109,7 +139,7 @@ body {
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="searchFormBook">
 					<button type="button" class="btn btn-warning btn-circle"
 						id="searchBook">
@@ -117,8 +147,8 @@ body {
 					</button>
 					<div class="navbar-form navbar-right hidden-xs">
 						<div class="searchform">
-							<input id="searchValBook" class="form-control" type="text" value=""
-								name="s" placeholder="Search">
+							<input id="searchValBook" class="form-control" type="text"
+								value="" name="s" placeholder="Search">
 						</div>
 					</div>
 				</div>
@@ -170,6 +200,12 @@ body {
 							<b>Enter year:</b><input class="form-control" id="year" />
 						</div>
 					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<b>Enter genre:</b><input class="form-control" id="genre" />
+						</div>
+					</div>
+
 					<button class="btn btn-warning" id="saveBook">Save</button>
 					<button class="btn btn-warning" id="renameBook">Save</button>
 					<button class="btn btn-default" id="addBackBook">Back</button>
@@ -178,7 +214,7 @@ body {
 				</div>
 			</form>
 		</div>
-
+<h3></h3>
 		<div id="tablePerson">
 			<div id="person"></div>
 			<button class="btn btn-warning" id="addPerson" onclick="add();">ADD</button>
